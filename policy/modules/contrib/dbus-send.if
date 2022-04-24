@@ -1,0 +1,86 @@
+
+## <summary>policy for dbus-send</summary>
+
+########################################
+## <summary>
+##	Execute dbus-send_exec_t in the dbus-send domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`dbus-send_domtrans',`
+	gen_require(`
+		type dbus-send_t, dbus-send_exec_t;
+	')
+	corecmd_search_bin($1)
+	domtrans_pattern($1, dbus-send_exec_t, dbus-send_t)
+')
+######################################
+## <summary>
+##	Execute dbus-send in the caller domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dbus-send_exec',`
+	gen_require(`
+		type dbus-send_exec_t;
+	')
+	can_exec($1, dbus-send_exec_t)
+	corecmd_search_bin($1)
+')
+########################################
+## <summary>
+##	Execute dbus-send in the dbus-send domain, and
+##	allow the specified role the dbus-send domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	The role to be allowed the dbus-send domain.
+##	</summary>
+## </param>
+#
+interface(`dbus-send_run',`
+	gen_require(`
+		type dbus-send_t;
+		attribute_role dbus-send_roles;
+	')
+	dbus-send_domtrans($1)
+	roleattribute $2 dbus-send_roles;
+')
+########################################
+## <summary>
+##	Role access for dbus-send
+## </summary>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+## <param name="domain">
+##	<summary>
+##	User domain for the role
+##	</summary>
+## </param>
+#
+interface(`dbus-send_role',`
+	gen_require(`
+		type dbus-send_t;
+		attribute_role dbus-send_roles;
+	')
+	allow $2 dbus-send_t:process { signull signal sigkill };
+	dbus-send_domtrans($2)
+	ps_process_pattern($2, dbus-send_t)
+	roleattribute $1 dbus-send_roles;
+')

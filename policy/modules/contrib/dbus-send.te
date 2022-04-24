@@ -1,0 +1,32 @@
+policy_module(dbus-send, 1.0.0)
+########################################
+# Required
+gen_require(`
+    class process { rlimitinh siginh };
+    role user_r;
+    type dbus-send_t;
+    type user_t;
+')
+
+# Roles
+attribute_role dbus-send_roles;
+roleattribute user_r dbus-send_roles;
+role dbus-send_roles types dbus-send_t;
+
+# Types (Binary)
+type dbus-send_t;
+type dbus-send_exec_t;
+application_domain(dbus-send_t, dbus-send_exec_t);
+domain_auto_transition_pattern(user_t, dbus-send_exec_t, dbus-send_t);
+########################################
+#============= dbus-send_t ==============
+dbus_read_pid_sock_files(dbus-send_t)
+dbus_send_system_bus(dbus-send_t)
+dbus_stream_connect_system_dbusd(dbus-send_t)
+dbus_system_bus_client(dbus-send_t)
+userdom_use_inherited_user_ptys(dbus-send_t)
+userdom_use_inherited_user_ttys(dbus-send_t)
+init_dbus_chat(dbus-send_t)
+init_status(dbus-send_t)
+#============= user_t ==============
+allow user_t dbus-send_t:process { rlimitinh siginh };
