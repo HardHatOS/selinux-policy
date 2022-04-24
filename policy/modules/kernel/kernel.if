@@ -322,7 +322,7 @@ interface(`kernel_rw_unix_dgram_sockets',`
 		type kernel_t;
 	')
 
-	allow $1 kernel_t:unix_dgram_socket { getattr read write ioctl };
+	allow $1 kernel_t:unix_dgram_socket { getattr read write };
 ')
 
 ########################################
@@ -4321,7 +4321,7 @@ interface(`kernel_unlabeled_entry_type',`
 	')
 
 	allow $1 unlabeled_t:file entrypoint;
-	allow $1 unlabeled_t:file { mmap_exec_file_perms ioctl lock };
+	allow $1 unlabeled_t:file { mmap_exec_file_perms lock };
 ')
 
 ########################################

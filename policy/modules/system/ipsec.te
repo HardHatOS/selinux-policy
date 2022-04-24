@@ -460,7 +460,7 @@ optional_policy(`
 
 allow racoon_t self:capability { net_admin net_bind_service };
 allow racoon_t self:netlink_route_socket { create_netlink_socket_perms };
-allow racoon_t self:unix_dgram_socket { connect create ioctl write };
+allow racoon_t self:unix_dgram_socket { connect create write };
 allow racoon_t self:netlink_selinux_socket { bind create read };
 allow racoon_t self:udp_socket create_socket_perms;
 allow racoon_t self:key_socket create_socket_perms;

@@ -1177,7 +1177,7 @@ corecmd_shell_entry_type(samba_unconfined_script_t)
 role system_r types samba_unconfined_script_t;
 
 allow smbd_t samba_unconfined_script_exec_t:dir search_dir_perms;
-allow smbd_t samba_unconfined_script_exec_t:file ioctl;
+#allow smbd_t samba_unconfined_script_exec_t:file ioctl;
 
 optional_policy(`
 	unconfined_domain(samba_unconfined_script_t)

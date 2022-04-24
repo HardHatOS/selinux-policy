@@ -115,7 +115,7 @@ interface(`spamassassin_domtrans_client',`
 	')
 
 	domtrans_pattern($1, spamc_exec_t, spamc_t)
-	allow $1 spamc_exec_t:file ioctl;
+#	allow $1 spamc_exec_t:file ioctl;
 ')
 
 ########################################

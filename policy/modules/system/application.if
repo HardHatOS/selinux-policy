@@ -60,7 +60,7 @@ interface(`application_executable_ioctl',`
                 attribute application_exec_type;
         ')
 
-        allow $1 application_exec_type:file ioctl;
+#        allow $1 application_exec_type:file ioctl;
 
 ')
 

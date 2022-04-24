@@ -580,7 +580,7 @@ allow init_t self:netlink_kobject_uevent_socket create_socket_perms;
 allow init_t self:netlink_selinux_socket create_socket_perms;
 allow init_t self:unix_dgram_socket lock;
 # Until systemd is fixed
-allow daemon init_t:socket_class_set { getopt read getattr ioctl setopt write };
+allow daemon init_t:socket_class_set { getopt read getattr setopt write };
 allow init_t self:udp_socket create_socket_perms;
 allow init_t self:netlink_route_socket create_netlink_socket_perms;
 
@@ -898,7 +898,7 @@ allow initrc_t self:key manage_key_perms;
 
 # Allow IPC with self
 allow initrc_t self:unix_dgram_socket create_socket_perms;
-allow initrc_t self:unix_stream_socket { create listen accept ioctl read getattr write setattr append bind connect getopt setopt shutdown connectto };
+allow initrc_t self:unix_stream_socket { create listen accept read getattr write setattr append bind connect getopt setopt shutdown connectto };
 allow initrc_t self:tcp_socket create_stream_socket_perms;
 allow initrc_t self:udp_socket create_socket_perms;
 allow initrc_t self:fifo_file rw_file_perms;
@@ -1820,7 +1820,7 @@ allow init_t daemon:udp_socket create_socket_perms;
 allow daemon init_t:unix_dgram_socket sendto;
 # need write to /var/run/systemd/notify
 init_write_pid_socket(daemon)
-allow daemon init_t:unix_stream_socket { append write read getattr ioctl };
+allow daemon init_t:unix_stream_socket { append write read getattr };
 
 # daemons started from init will
 # inherit fds from init for the console
@@ -1861,7 +1861,7 @@ dontaudit systemprocess init_t:unix_stream_socket getattr;
 
 allow init_t daemon:unix_stream_socket create_stream_socket_perms;
 allow init_t daemon:unix_dgram_socket create_socket_perms;
-allow daemon init_t:unix_stream_socket ioctl;
+#allow daemon init_t:unix_stream_socket ioctl;
 allow daemon init_t:unix_dgram_socket sendto;
 # need write to /var/run/systemd/notify
 init_write_pid_socket(daemon)
@@ -1872,7 +1872,7 @@ allow init_t systemprocess:process { dyntransition siginh };
 allow init_t systemprocess:unix_stream_socket create_stream_socket_perms;
 allow init_t systemprocess:unix_dgram_socket create_socket_perms;
 allow systemprocess init_t:unix_dgram_socket sendto;
-allow systemprocess init_t:unix_stream_socket { append write read getattr ioctl };
+allow systemprocess init_t:unix_stream_socket { append write read getattr };
 
 files_dontaudit_rw_inherited_locks(systemprocess)
 files_dontaudit_tmp_file_leaks(systemprocess)

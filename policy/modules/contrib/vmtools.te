@@ -122,7 +122,7 @@ optional_policy(`
 
 	allow vmtools_t vmtools_unconfined_exec_t:dir search_dir_perms;
 	allow vmtools_t vmtools_unconfined_exec_t:dir read_file_perms;
-	allow vmtools_t vmtools_unconfined_exec_t:file ioctl;
+#	allow vmtools_t vmtools_unconfined_exec_t:file ioctl;
 
 	init_domtrans_script(vmtools_unconfined_t)
 

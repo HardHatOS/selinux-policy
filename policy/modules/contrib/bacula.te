@@ -205,7 +205,7 @@ optional_policy(`
 
          allow bacula_unconfined_script_t bacula_unconfined_script_exec_t:dir search_dir_perms;
          allow bacula_unconfined_script_t bacula_unconfined_script_exec_t:dir read_file_perms;
-         allow bacula_unconfined_script_t bacula_unconfined_script_exec_t:file ioctl;
+#         allow bacula_unconfined_script_t bacula_unconfined_script_exec_t:file ioctl;
 
          optional_policy(`
             unconfined_domain(bacula_unconfined_script_t)

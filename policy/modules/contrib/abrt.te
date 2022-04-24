@@ -490,7 +490,7 @@ allow abrt_retrace_worker_t self:capability { setuid };
 allow abrt_retrace_worker_t self:fifo_file rw_fifo_file_perms;
 
 domtrans_pattern(abrt_retrace_worker_t, abrt_retrace_coredump_exec_t, abrt_retrace_coredump_t)
-allow abrt_retrace_worker_t abrt_retrace_coredump_exec_t:file ioctl;
+#allow abrt_retrace_worker_t abrt_retrace_coredump_exec_t:file ioctl;
 
 manage_dirs_pattern(abrt_retrace_worker_t, abrt_retrace_spool_t, abrt_retrace_spool_t)
 manage_files_pattern(abrt_retrace_worker_t, abrt_retrace_spool_t, abrt_retrace_spool_t)

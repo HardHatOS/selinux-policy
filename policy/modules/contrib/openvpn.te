@@ -238,7 +238,7 @@ corecmd_shell_entry_type(openvpn_unconfined_script_t)
 role system_r types openvpn_unconfined_script_t;
 
 allow openvpn_t openvpn_unconfined_script_exec_t:dir search_dir_perms;
-allow openvpn_t openvpn_unconfined_script_exec_t:file ioctl;
+#allow openvpn_t openvpn_unconfined_script_exec_t:file ioctl;
 
 optional_policy(`
 	unconfined_domain(openvpn_unconfined_script_t)

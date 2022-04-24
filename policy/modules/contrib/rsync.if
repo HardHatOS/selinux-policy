@@ -135,7 +135,7 @@ interface(`rsync_ioctl_stream_sockets',`
 		type rsync_t;
 	')
 
-	allow $1 rsync_t:unix_stream_socket ioctl;
+#	allow $1 rsync_t:unix_stream_socket ioctl;
 ')
 
 ########################################

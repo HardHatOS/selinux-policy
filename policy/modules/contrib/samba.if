@@ -988,7 +988,7 @@ template(`samba_helper_template',`
 	domain_entry_file(samba_$1_script_t, samba_$1_script_exec_t)
 
 	domtrans_pattern(smbd_t, samba_$1_script_exec_t, samba_$1_script_t)
-	allow smbd_t samba_$1_script_exec_t:file ioctl;
+#	allow smbd_t samba_$1_script_exec_t:file ioctl;
 ')
 
 ########################################

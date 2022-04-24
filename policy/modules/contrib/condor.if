@@ -29,7 +29,7 @@ template(`condor_domain_template',`
     role system_r types condor_$1_t;
 
     domtrans_pattern(condor_master_t, condor_$1_exec_t, condor_$1_t)
-    allow condor_master_t condor_$1_exec_t:file ioctl;
+#    allow condor_master_t condor_$1_exec_t:file ioctl;
 
 	kernel_read_system_state(condor_$1_t)
 

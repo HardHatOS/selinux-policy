@@ -81,7 +81,7 @@ interface(`cron_role',`
 	dontaudit crond_t $2_t:process { noatsecure siginh rlimitinh };
 	allow $2_t crond_t:process sigchld;
 
-    allow $2_t user_cron_spool_t:file { getattr read write ioctl };
+    allow $2_t user_cron_spool_t:file { getattr read write };
 
 	# crontab shows up in user ps
 	allow $2_t crontab_t:process signal_perms;
@@ -175,7 +175,7 @@ interface(`cron_unconfined_role',`
 
     allow $2_t crond_t:process sigchld;
 
-    allow $2_t user_cron_spool_t:file { getattr read write ioctl };
+    allow $2_t user_cron_spool_t:file { getattr read write };
 
 	# cronjob shows up in user ps
 	ps_process_pattern($2_t, unconfined_cronjob_t)

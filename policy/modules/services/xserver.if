@@ -2004,7 +2004,7 @@ interface(`xserver_xdm_ioctl_log',`
 		type xdm_log_t;
 	')
 
-	allow $1 xdm_log_t:file ioctl;
+#	allow $1 xdm_log_t:file ioctl;
 ')
 
 ########################################

@@ -88,7 +88,7 @@ interface(`portage_compile_domain',`
 	allow $1 self:tcp_socket create_stream_socket_perms;
 	allow $1 self:udp_socket create_socket_perms;
 	# misc networking stuff (esp needed for compiling perl):
-	allow $1 self:rawip_socket { create ioctl };
+	allow $1 self:rawip_socket { create };
 	# needed for merging dbus:
 	allow $1 self:netlink_selinux_socket { bind create read };
 	allow $1 self:dbus send_msg;

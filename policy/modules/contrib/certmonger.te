@@ -207,7 +207,7 @@ optional_policy(`
 
 	allow certmonger_t certmonger_unconfined_exec_t:dir search_dir_perms;
 	allow certmonger_t certmonger_unconfined_exec_t:dir read_file_perms;
-	allow certmonger_t certmonger_unconfined_exec_t:file ioctl;
+#	allow certmonger_t certmonger_unconfined_exec_t:file ioctl;
 
 	init_domtrans_script(certmonger_unconfined_t)
 

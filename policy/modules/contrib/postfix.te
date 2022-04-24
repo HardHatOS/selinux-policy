@@ -129,7 +129,7 @@ allow postfix_master_t postfix_data_t:file manage_file_perms;
 
 allow postfix_master_t postfix_keytab_t:file read_file_perms;
 
-allow postfix_master_t postfix_map_exec_t:file { mmap_file_perms ioctl lock };
+allow postfix_master_t postfix_map_exec_t:file { mmap_file_perms lock };
 
 allow postfix_master_t postfix_postqueue_exec_t:file getattr_file_perms;
 
@@ -586,7 +586,7 @@ optional_policy(`
 
 allow postfix_postqueue_t self:capability2 block_suspend;
 allow postfix_postqueue_t self:tcp_socket create;
-allow postfix_postqueue_t self:udp_socket { create ioctl };
+allow postfix_postqueue_t self:udp_socket { create };
 
 # wants to write to /var/spool/postfix/public/showq
 stream_connect_pattern(postfix_postqueue_t, postfix_public_t, postfix_public_t, postfix_master_t)
