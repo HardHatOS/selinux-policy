@@ -84,11 +84,6 @@ allow user_t iceauth_t:process { noatsecure rlimitinh siginh };
 allow user_t self:capability sys_admin;
 allow user_t xauth_t:process { rlimitinh siginh };
 
-### TEMP (BEGIN)
-userdom_manage_tmp_dirs(iceauth_t)
-userdom_manage_tmp_files(iceauth_t)
-### TEMP (END)
-
 auth_read_passwd_file(system_dbusd_t)
 corenet_tcp_connect_xserver_port(user_dbusd_t)
 dbus_acquire_svc_system_dbusd(NetworkManager_t)
@@ -105,6 +100,8 @@ dbus_write_session_tmp_sock_files(user_dbusd_t)
 dev_rw_inherited_dri(system_dbusd_t)
 dev_rw_inherited_input_dev(system_dbusd_t)
 files_delete_tmp_sockets(user_dbusd_t)
+files_map_read_etc_files(system_dbusd_t)
+files_map_read_etc_files(user_dbusd_t)
 files_rw_generic_tmp_sockets(user_t)
 files_watch_usr_dirs(system_dbusd_t)
 files_watch_usr_dirs(user_dbusd_t)
