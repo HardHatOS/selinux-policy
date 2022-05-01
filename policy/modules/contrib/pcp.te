@@ -162,9 +162,9 @@ optional_policy(`
 	cron_read_pid_files(pcp_pmcd_t)
 ')
 
-optional_policy(`
-    container_manage_lib_files(pcp_pmcd_t)
-')
+#optional_policy(`
+#    container_manage_lib_files(pcp_pmcd_t)
+#')
 
 optional_policy(`
     mock_read_lib_files(pcp_pmcd_t)

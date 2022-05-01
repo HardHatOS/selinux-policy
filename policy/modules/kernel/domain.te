@@ -704,6 +704,6 @@ optional_policy(`
 	')
 ')
 
-optional_policy(`
-    container_spc_stream_connect(domain)
-')
+#optional_policy(`
+#    container_spc_stream_connect(domain)
+#')

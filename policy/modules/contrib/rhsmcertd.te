@@ -182,6 +182,6 @@ optional_policy(`
     sssd_stream_connect(rhsmcertd_t)
 ')
 
-optional_policy(`
-    container_manage_config_files(rhsmcertd_t)
-')
+#optional_policy(`
+#    container_manage_config_files(rhsmcertd_t)
+#')

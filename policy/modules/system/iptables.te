@@ -126,9 +126,9 @@ ifdef(`hide_broken_symptoms',`
 	dev_dontaudit_write_mtrr(iptables_t)
 ')
 
-optional_policy(`
-	container_read_state(iptables_t)
-')
+#optional_policy(`
+#	container_read_state(iptables_t)
+#')
 
 optional_policy(`
 	fail2ban_append_log(iptables_t)
