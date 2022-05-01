@@ -1,10 +1,37 @@
 policy_module(networkmanager, 1.15.3)
+########################################
+gen_require(`
+    class capability { dac_override dac_read_search net_admin net_bind_service net_raw sys_nice };
+    class dir { add_name create getattr open read remove_name search watch write };
+    class file { create execute execute_no_trans getattr map open read rename unlink write };
+    class lnk_file { read };
+    class netlink_generic_socket { bind create getattr setopt };
+    class netlink_kobject_uevent_socket { bind create getattr getopt setopt };
+    class netlink_route_socket { bind create getattr nlmsg_read nlmsg_write setopt };
+    class packet_socket { bind create setopt };
+    class process { setsched };
+    class rawip_socket { create read setopt write };
+    class sock_file { create setattr unlink write };
+    class udp_socket { bind connect create setopt };
+    class unix_dgram_socket { bind connect create getattr getopt read setopt write };
+    type NetworkManager_etc_rw_t;
+    type NetworkManager_initrc_exec_t;
+    type NetworkManager_t;
+    type cache_home_t;
+    type chronyc_exec_t;
+    type chronyd_var_run_t;
+    type policykit_t;
+    type systemd_logind_sessions_t;
+    type systemd_logind_t;
+    type systemd_logind_var_run_t;
+    type user_t;
+    type var_run_t;
+')
 
 ########################################
 #
 # Declarations
 #
-
 attribute networkmanager_dispatcher_plugin;
 attribute networkmanager_dispatcher_script;
 
@@ -66,53 +93,10 @@ type wpa_cli_exec_t;
 init_system_domain(wpa_cli_t, wpa_cli_exec_t)
 
 ########################################
-require {
-	class capability { dac_override dac_read_search net_bind_service net_raw sys_nice };
-	class dir { add_name create getattr open read remove_name search watch write };
-	class file { create execute execute_no_trans getattr ioctl map open read rename unlink write };
-	class lnk_file read;
-	class netlink_generic_socket { bind create getattr setopt };
-	class netlink_kobject_uevent_socket { bind create getattr getopt setopt };
-	class netlink_route_socket { bind create getattr nlmsg_read nlmsg_write setopt };
-	class packet_socket { bind create setopt };
-	class process { noatsecure rlimitinh setsched siginh };
-	class rawip_socket { create setopt write };
-	class sock_file { create setattr unlink write };
-	class udp_socket { bind connect create ioctl setopt };
-	class unix_dgram_socket { bind connect create getattr getopt ioctl read setopt write };
-	type NetworkManager_etc_rw_t;
-	type NetworkManager_initrc_exec_t;
-	type NetworkManager_t;
-	type cache_home_t;
-	type chronyc_exec_t;
-	type chronyd_t;
-	type chronyd_var_run_t;
-	type firewalld_t;
-	type iceauth_t;
-	type policykit_t;
-	type system_dbusd_t;
-	type systemd_gpt_generator_t;
-	type systemd_hostnamed_t;
-	type systemd_logind_sessions_t;
-	type systemd_logind_t;
-	type systemd_logind_var_run_t;
-	type systemd_resolved_t;
-	type systemd_sysctl_t;
-	type systemd_tmpfiles_t;
-	type systemd_userdbd_t;
-	type user_dbusd_t;
-	type user_ssh_agent_t;
-	type user_t;
-	type var_run_t;
-	type xauth_t;
-   	type policykit_auth_t;
-    type chkpwd_t;
-}
-
 #============= NetworkManager_t ==============
 allow NetworkManager_t NetworkManager_etc_rw_t:dir { getattr open read search };
 allow NetworkManager_t NetworkManager_initrc_exec_t:dir { getattr open read search };
-allow NetworkManager_t NetworkManager_initrc_exec_t:file { execute execute_no_trans getattr ioctl open read };
+allow NetworkManager_t NetworkManager_initrc_exec_t:file { execute execute_no_trans getattr open read };
 allow NetworkManager_t cache_home_t:lnk_file read;
 allow NetworkManager_t chronyc_exec_t:file { execute execute_no_trans map open read };
 allow NetworkManager_t chronyd_var_run_t:sock_file { create setattr unlink write };
@@ -123,7 +107,7 @@ allow NetworkManager_t self:netlink_route_socket { bind create getattr nlmsg_rea
 allow NetworkManager_t self:packet_socket { bind create setopt };
 allow NetworkManager_t self:process setsched;
 allow NetworkManager_t self:rawip_socket { create read setopt write };
-allow NetworkManager_t self:udp_socket { bind connect create ioctl setopt };
+allow NetworkManager_t self:udp_socket { bind connect create setopt };
 allow NetworkManager_t self:unix_dgram_socket { bind connect create getattr getopt read setopt write };
 allow NetworkManager_t systemd_logind_sessions_t:dir { read watch };
 allow NetworkManager_t systemd_logind_var_run_t:dir { read watch };
