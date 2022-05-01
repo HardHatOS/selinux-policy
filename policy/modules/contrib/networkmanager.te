@@ -95,6 +95,7 @@ init_system_domain(wpa_cli_t, wpa_cli_exec_t)
 #
 
 #============= NetworkManager_t ==============
+allow NetworkManager_t NetworkManager_dispatcher_script_t:dir { read search };
 allow NetworkManager_t NetworkManager_etc_rw_t:dir { add_name getattr open read remove_name search write };
 allow NetworkManager_t NetworkManager_etc_rw_t:file { create rename setattr unlink write };
 allow NetworkManager_t NetworkManager_initrc_exec_t:dir { getattr open read search };
@@ -142,12 +143,14 @@ kernel_dgram_send(NetworkManager_t)
 kernel_request_load_module(NetworkManager_t)
 kernel_rw_net_sysctls(NetworkManager_t)
 kernel_search_network_sysctl(NetworkManager_t)
+logging_create_devlog_dev(NetworkManager_t)
 logging_read_syslog_pid(NetworkManager_t)
 logging_stream_connect_syslog(NetworkManager_t)
 miscfiles_read_generic_certs(NetworkManager_t)
 networkmanager_dbus_chat(NetworkManager_t)
 networkmanager_dbus_chat(policykit_t)
 networkmanager_dbus_chat(systemd_logind_t)
+networkmanager_delete_pid_files(NetworkManager_t)
 networkmanager_dgram_send(chronyd_t)
 networkmanager_manage_lib(NetworkManager_t)
 networkmanager_read_conf(NetworkManager_t)
@@ -158,5 +161,6 @@ sysnet_read_config(NetworkManager_t)
 sysnet_read_dhcp_config(NetworkManager_t)
 systemd_machined_manage_pid_files(NetworkManager_t)
 systemd_write_inhibit_pipes(NetworkManager_t)
+term_write_console(NetworkManager_t)
 udev_read_db(NetworkManager_t)
 udev_search_pids(NetworkManager_t)
