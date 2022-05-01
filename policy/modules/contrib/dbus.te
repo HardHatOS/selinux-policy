@@ -1,5 +1,5 @@
 policy_module(dbus, 1.0.0)
-##############################
+
 gen_require(`
     class capability { audit_write setgid setuid sys_admin };
     class dbus { acquire_svc };
@@ -26,6 +26,7 @@ gen_require(`
 #
 # Delcarations
 #
+
 attribute dbusd_unconfined;
 attribute session_bus_type;
 attribute system_bus_type;
@@ -62,6 +63,10 @@ ifdef(`enable_mls',`
 ')
 
 ##############################
+#
+# Local policy
+#
+
 #============= system_dbusd_t ==============
 allow system_dbusd_t dbusd_etc_t:dir { read watch };
 allow system_dbusd_t self:capability { audit_write net_admin setgid setuid };

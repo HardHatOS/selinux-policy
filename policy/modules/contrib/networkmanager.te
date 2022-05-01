@@ -1,5 +1,5 @@
 policy_module(networkmanager, 1.15.3)
-########################################
+
 gen_require(`
     class capability { dac_override dac_read_search net_admin net_bind_service net_raw sys_nice };
     class dir { add_name create getattr open read remove_name search watch write };
@@ -93,6 +93,10 @@ type wpa_cli_exec_t;
 init_system_domain(wpa_cli_t, wpa_cli_exec_t)
 
 ########################################
+#
+# Local policy
+#
+
 #============= NetworkManager_t ==============
 allow NetworkManager_t NetworkManager_etc_rw_t:dir { add_name getattr open read remove_name search write };
 allow NetworkManager_t NetworkManager_etc_rw_t:file { create rename setattr unlink write };
