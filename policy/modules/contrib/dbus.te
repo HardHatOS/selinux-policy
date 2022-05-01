@@ -11,7 +11,6 @@ gen_require(`
     class system { status };
     class unix_dgram_socket { connect create getopt setopt };
     class unix_stream_socket { connectto };
-    type dbusd_etc_t;
     type firewalld_t;
     type gnome_atspi_exec_t;
     type iceauth_t;
@@ -84,10 +83,6 @@ allow user_dbusd_t user_t:file { open read };
 allow user_dbusd_t user_t:process { noatsecure rlimitinh siginh };
 allow user_dbusd_t user_t:system status;
 allow user_dbusd_t user_t:unix_stream_socket connectto;
-#============= user_t ==============
-allow user_t iceauth_t:process { noatsecure rlimitinh siginh };
-allow user_t self:capability sys_admin;
-allow user_t xauth_t:process { rlimitinh siginh };
 
 auth_read_passwd_file(system_dbusd_t)
 corenet_tcp_connect_xserver_port(user_dbusd_t)
