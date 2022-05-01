@@ -14,9 +14,6 @@ gen_require(`
     class sock_file { create setattr unlink write };
     class udp_socket { bind connect create setopt };
     class unix_dgram_socket { bind connect create getattr getopt read setopt write };
-    type NetworkManager_etc_rw_t;
-    type NetworkManager_initrc_exec_t;
-    type NetworkManager_t;
     type cache_home_t;
     type chronyc_exec_t;
     type chronyd_var_run_t;
