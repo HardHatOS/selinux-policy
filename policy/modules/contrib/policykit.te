@@ -52,6 +52,7 @@ files_pid_file(policykit_var_run_t)
 
 #============= policykit_t ==============
 allow policykit_t policykit_auth_exec_t:file { execute execute_no_trans map open read };
+allow policykit_t policykit_auth_t:process { noatsecure rlimitinh siginh };
 allow policykit_t policykit_var_lib_t:dir { getattr open read search watch };
 allow policykit_t self:capability { setgid setuid };
 allow policykit_t self:process { execmem setsched };
