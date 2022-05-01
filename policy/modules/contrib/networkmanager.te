@@ -94,7 +94,8 @@ init_system_domain(wpa_cli_t, wpa_cli_exec_t)
 
 ########################################
 #============= NetworkManager_t ==============
-allow NetworkManager_t NetworkManager_etc_rw_t:dir { getattr open read search };
+allow NetworkManager_t NetworkManager_etc_rw_t:dir { add_name getattr open read remove_name search write };
+allow NetworkManager_t NetworkManager_etc_rw_t:file { create rename setattr unlink write };
 allow NetworkManager_t NetworkManager_initrc_exec_t:dir { getattr open read search };
 allow NetworkManager_t NetworkManager_initrc_exec_t:file { execute execute_no_trans getattr open read };
 allow NetworkManager_t cache_home_t:lnk_file read;
