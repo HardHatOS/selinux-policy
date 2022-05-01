@@ -64,10 +64,10 @@ ifdef(`enable_mls',`
 ##############################
 #============= system_dbusd_t ==============
 allow system_dbusd_t dbusd_etc_t:dir { read watch };
-allow system_dbusd_t self:capability { audit_write setgid setuid };
+allow system_dbusd_t self:capability { audit_write net_admin setgid setuid };
 allow system_dbusd_t self:netlink_audit_socket { create nlmsg_relay read write };
 allow system_dbusd_t self:process setcap;
-allow system_dbusd_t self:unix_dgram_socket { connect create getopt setopt };
+allow system_dbusd_t self:unix_dgram_socket { connect create getopt setopt write };
 #============= user_dbusd_t ==============
 allow user_dbusd_t gnome_atspi_exec_t:file map;
 allow user_dbusd_t self:dbus acquire_svc;
@@ -126,6 +126,7 @@ selinux_compute_access_vector(system_dbusd_t)
 selinux_compute_access_vector(user_dbusd_t)
 selinux_get_enforce_mode(system_dbusd_t)
 selinux_get_enforce_mode(user_dbusd_t)
+seutil_read_config(system_dbusd_t)
 seutil_read_config(user_dbusd_t)
 seutil_read_default_contexts(system_dbusd_t)
 seutil_read_default_contexts(user_dbusd_t)
