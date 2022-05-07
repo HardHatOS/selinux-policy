@@ -58,7 +58,7 @@ interface(`dbus_exec_dbusd',`
 template(`dbus_role_template',`
 	gen_require(`
 		class dbus { send_msg acquire_svc };
-		attribute dbusd_unconfined, session_bus_type;
+		attribute session_bus_type;
 		type system_dbusd_t, session_dbusd_tmp_t, dbusd_exec_t, dbusd_etc_t;
 		type $1_t;
 	')
@@ -90,7 +90,7 @@ template(`dbus_role_template',`
     allow $1_dbusd_t $3:unix_dgram_socket sendto;
 
 	# SE-DBus specific permissions
-	allow { dbusd_unconfined $3 } $1_dbusd_t:dbus { send_msg acquire_svc };
+	allow $3 $1_dbusd_t:dbus { send_msg acquire_svc };
 	allow $3 system_dbusd_t:dbus { send_msg acquire_svc };
 
     # Permissions for dbus-broker running with systemd user sessions
@@ -153,12 +153,11 @@ interface(`dbus_system_bus_client',`
 		type system_dbusd_t, system_dbusd_t;
 		type system_dbusd_var_run_t, system_dbusd_var_lib_t;
 		class dbus send_msg;
-		attribute dbusd_unconfined;
 	')
 
 	# SE-DBus specific permissions
 	allow $1 { system_dbusd_t self }:dbus send_msg;
-	allow { system_dbusd_t dbusd_unconfined } $1:dbus send_msg;
+	allow system_dbusd_t $1:dbus send_msg;
 
 	read_files_pattern($1, system_dbusd_var_lib_t, system_dbusd_var_lib_t)
 	read_lnk_files_pattern($1, system_dbusd_var_lib_t, system_dbusd_var_lib_t)
@@ -171,9 +170,6 @@ interface(`dbus_system_bus_client',`
 	stream_connect_pattern($1, system_dbusd_var_run_t, system_dbusd_var_run_t, system_dbusd_t)
 	dbus_read_config($1)
 
-    optional_policy(`
-        unconfined_server_dbus_chat($1)
-    ')
 ')
 
 #######################################
@@ -420,25 +416,6 @@ interface(`dbus_send_system_bus',`
 
 ########################################
 ## <summary>
-##	Allow unconfined access to the system DBUS.
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`dbus_system_bus_unconfined',`
-	gen_require(`
-		type system_dbusd_t;
-		class dbus all_dbus_perms;
-	')
-
-	allow $1 system_dbusd_t:dbus *;
-')
-
-########################################
-## <summary>
 ##	Create a domain for processes
 ##	which can be started by the system dbus
 ## </summary>
@@ -487,24 +464,6 @@ interface(`dbus_use_system_bus_fds',`
 	')
 
 	allow $1 system_dbusd_t:fd use;
-')
-
-########################################
-## <summary>
-##	Allow unconfined access to the system DBUS.
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`dbus_unconfined',`
-	gen_require(`
-		attribute dbusd_unconfined;
-	')
-
-	typeattribute $1 dbusd_unconfined;
 ')
 
 ########################################
