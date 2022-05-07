@@ -1,0 +1,43 @@
+policy_module(required00, 99.99)
+
+require {
+	type user_ssh_agent_t;
+    type user_t;
+    type sshd_t;
+    type xauth_t;
+    type iceauth_t;
+    type systemd_userdbd_t;
+}
+files_map_read_etc_files(iceauth_t)
+files_map_read_etc_files(xauth_t)
+userdom_manage_tmp_dirs(iceauth_t)
+userdom_manage_tmp_files(iceauth_t)
+allow user_t user_ssh_agent_t:process { noatsecure rlimitinh siginh };
+auth_read_shadow(sshd_t)
+files_map_read_etc_files(user_ssh_agent_t)
+allow user_t xauth_t:process noatsecure;
+files_map_read_etc_files(systemd_userdbd_t)
+require {
+	type policykit_t;
+	type policykit_auth_t;
+	type gpg_agent_t;
+	type user_t;
+	class capability setuid;
+	class process { noatsecure rlimitinh siginh };
+}
+
+#============= policykit_t ==============
+allow policykit_t policykit_auth_t:process { noatsecure rlimitinh siginh };
+
+#============= user_t ==============
+allow user_t gpg_agent_t:process { noatsecure rlimitinh siginh };
+require {
+	type systemd_logind_t;
+}
+
+#============= systemd_logind_t ==============
+files_map_read_etc_files(systemd_logind_t)
+allow user_t xauth_t:process { rlimitinh siginh };
+allow user_t iceauth_t:process { noatsecure rlimitinh siginh };
+allow user_t self:capability sys_admin;
+dev_rw_dri(user_t)
