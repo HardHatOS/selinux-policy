@@ -1,0 +1,20 @@
+policy_module(dbus-binding-tool, 1.0.0)
+########################################
+# Required
+gen_require(`
+    class process { rlimitinh siginh };
+    role user_r;
+    type user_t;
+')
+
+# Roles
+attribute_role dbus-binding-tool_roles;
+roleattribute user_r dbus-binding-tool_roles;
+role dbus-binding-tool_roles types dbus-binding-tool_t;
+
+# Types (Binary)
+type dbus-binding-tool_t;
+type dbus-binding-tool_exec_t;
+application_domain(dbus-binding-tool_t, dbus-binding-tool_exec_t);
+domain_auto_transition_pattern(user_t, dbus-binding-tool_exec_t, dbus-binding-tool_t);
+########################################
