@@ -24,9 +24,10 @@ dbus_read_pid_sock_files(dbus-send_t)
 dbus_send_system_bus(dbus-send_t)
 dbus_stream_connect_system_dbusd(dbus-send_t)
 dbus_system_bus_client(dbus-send_t)
-userdom_use_inherited_user_ptys(dbus-send_t)
-userdom_use_inherited_user_ttys(dbus-send_t)
 init_dbus_chat(dbus-send_t)
 init_status(dbus-send_t)
+userdom_use_inherited_user_ptys(dbus-send_t)
+userdom_use_inherited_user_ttys(dbus-send_t)
+
 #============= user_t ==============
 allow user_t dbus-send_t:process { rlimitinh siginh };
