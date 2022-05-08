@@ -1,7 +1,7 @@
 policy_module(networkmanager, 1.15.3)
 
 gen_require(`
-    class capability { dac_override dac_read_search net_admin net_bind_service net_raw sys_nice };
+    class capability { dac_override dac_read_search kill net_admin net_bind_service net_raw sys_nice };
     class dir { add_name create getattr open read remove_name search watch write };
     class file { create execute execute_no_trans getattr map open read rename unlink write };
     class lnk_file { read };
@@ -103,7 +103,7 @@ allow NetworkManager_t NetworkManager_initrc_exec_t:file { execute execute_no_tr
 allow NetworkManager_t cache_home_t:lnk_file read;
 allow NetworkManager_t chronyc_exec_t:file { execute execute_no_trans map open read };
 allow NetworkManager_t chronyd_var_run_t:sock_file { create setattr unlink write };
-allow NetworkManager_t self:capability { dac_override dac_read_search net_admin net_bind_service net_raw sys_nice };
+allow NetworkManager_t self:capability { dac_override dac_read_search kill net_admin net_bind_service net_raw sys_nice };
 allow NetworkManager_t self:netlink_generic_socket { bind create getattr setopt };
 allow NetworkManager_t self:netlink_kobject_uevent_socket { bind create getattr getopt setopt };
 allow NetworkManager_t self:netlink_route_socket { bind create getattr nlmsg_read nlmsg_write setopt };
@@ -159,6 +159,7 @@ networkmanager_rw_routing_sockets(NetworkManager_t)
 sysnet_manage_config_dirs(NetworkManager_t)
 sysnet_read_config(NetworkManager_t)
 sysnet_read_dhcp_config(NetworkManager_t)
+systemd_hostnamed_read_config(NetworkManager_t)
 systemd_machined_manage_pid_files(NetworkManager_t)
 systemd_write_inhibit_pipes(NetworkManager_t)
 term_write_console(NetworkManager_t)
