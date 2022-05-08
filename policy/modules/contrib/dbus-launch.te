@@ -22,6 +22,7 @@ gen_require(`
     type dbus-cleanup-sockets_exec_t;
     type dbus-monitor_exec_t;
     type dbus-test-tool_exec_t;
+    type dbus-update-activation-environment_exec_t;
     type dbus-uuidgen_exec_t;
     type dbus_home_t;
     type dbusd_etc_t;
@@ -62,6 +63,7 @@ allow dbus-launch_t config_home_t:lnk_file { create read unlink };
 allow dbus-launch_t dbus-cleanup-sockets_exec_t:file { execute execute_no_trans getattr map open read };
 allow dbus-launch_t dbus-monitor_exec_t:file { execute execute_no_trans getattr map open read };
 allow dbus-launch_t dbus-test-tool_exec_t:file { execute execute_no_trans getattr map open read };
+allow dbus-launch_t dbus-update-activation-environment_exec_t:file { execute execute_no_trans getattr map open read };
 allow dbus-launch_t dbus-uuidgen_exec_t:file { execute execute_no_trans getattr map open read };
 allow dbus-launch_t dbus_home_t:dir { add_name write };
 allow dbus-launch_t dbus_home_t:file { create getattr open write };
@@ -168,6 +170,7 @@ pulseaudio_read_home_files(dbus-launch_t)
 selinux_compute_access_vector(dbus-launch_t)
 selinux_get_enforce_mode(dbus-launch_t)
 selinux_set_enforce_mode(dbus-launch_t)
+seutil_read_config(dbus-launch_t)
 seutil_read_default_contexts(dbus-launch_t)
 seutil_search_default_contexts(dbus-launch_t)
 ssh_agent_exec(dbus-launch_t)
@@ -200,4 +203,5 @@ xserver_manage_user_xauth(dbus-launch_t)
 allow user_t dbus-launch_t:dir search;
 allow user_t dbus-launch_t:file { open read };
 allow user_t dbus-launch_t:lnk_file read;
+allow user_t dbus-launch_t:process { noatsecure rlimitinh siginh };
 allow user_t dbus-launch_t:shm { associate getattr read unix_read unix_write write };

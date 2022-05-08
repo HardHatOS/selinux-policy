@@ -67,10 +67,13 @@ allow dbus-update-activation-environment_t user_dbusd_t:dbus send_msg;
 allow dbus-update-activation-environment_t user_dbusd_t:unix_stream_socket connectto;
 allow dbus-update-activation-environment_t user_t:dbus send_msg;
 allow dbus-update-activation-environment_t user_t:system reload;
-allow dbus-update-activation-environment_t dbus-launch_exec_t:file execute;
+allow dbus-update-activation-environment_t dbus-launch_exec_t:file { execute open read };
 
+dbus_read_lib_files(dbus-update-activation-environment_t)
 dbus_write_session_tmp_sock_files(dbus-update-activation-environment_t)
+userdom_list_user_home_dirs(dbus-update-activation-environment_t)
+userdom_search_user_tmp_dirs(dbus-update-activation-environment_t)
 userdom_use_inherited_user_ttys(dbus-update-activation-environment_t)
-
 #============= user_t ==============
 allow user_t dbus-launch_t:process signal;
+allow user_t dbus-update-activation-environment_t:process { noatsecure rlimitinh siginh };
