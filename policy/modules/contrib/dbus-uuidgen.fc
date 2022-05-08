@@ -1,0 +1,1 @@
+/usr/bin/dbus-uuidgen -- gen_context(system_u:object_r:dbus-uuidgen_exec_t,s0)

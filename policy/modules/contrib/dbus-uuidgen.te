@@ -1,0 +1,20 @@
+policy_module(dbus-uuidgen, 1.0.0)
+########################################
+# Required
+gen_require(`
+    class process { rlimitinh siginh };
+    role user_r;
+    type user_t;
+')
+
+# Roles
+attribute_role dbus-uuidgen_roles;
+roleattribute user_r dbus-uuidgen_roles;
+role dbus-uuidgen_roles types dbus-uuidgen_t;
+
+# Types (Binary)
+type dbus-uuidgen_t;
+type dbus-uuidgen_exec_t;
+application_domain(dbus-uuidgen_t, dbus-uuidgen_exec_t);
+domain_auto_transition_pattern(user_t, dbus-uuidgen_exec_t, dbus-uuidgen_t);
+########################################
