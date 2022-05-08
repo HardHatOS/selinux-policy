@@ -165,7 +165,7 @@ systemd_domain_template(systemd_sleep)
 
 #######################################
 #
-# Systemd_logind local policy
+# Local policy
 #
 
 
@@ -256,7 +256,6 @@ require {
 
 #============= auditd_t ==============
 allow auditd_t self:capability fowner;
-
 #============= init_t ==============
 allow init_t hostname_etc_t:file relabelto;
 allow init_t systemd_logind_inhibit_var_run_t:dir { create getattr open read };
@@ -268,14 +267,9 @@ allow init_t systemd_passwd_var_run_t:dir { relabelto watch };
 allow init_t systemd_resolved_var_run_t:dir { create mounton setattr };
 allow init_t systemd_userdbd_runtime_t:dir relabelto;
 allow init_t systemd_userdbd_runtime_t:sock_file { create relabelto unlink };
-allow init_t unconfined_service_t:process siginh;
-allow init_t unconfined_t:process siginh;
 allow init_t user_t:process siginh;
+
 auth_read_shadow(init_t)
-
-#============= systemd_coredump_var_lib_t ==============
-#fs_associate(systemd_coredump_var_lib_t)
-
 #============= systemd_gpt_generator_t ==============
 dev_list_sysfs(systemd_gpt_generator_t)
 dev_read_sysfs(systemd_gpt_generator_t)
@@ -284,9 +278,9 @@ fs_getattr_cgroup(systemd_gpt_generator_t)
 fs_getattr_xattr_fs(systemd_gpt_generator_t)
 init_read_state(systemd_gpt_generator_t)
 storage_raw_read_fixed_disk(systemd_gpt_generator_t)
-
 #============= systemd_hostnamed_t ==============
 allow systemd_hostnamed_t self:unix_dgram_socket { connect create getopt setopt };
+
 dbus_acquire_svc_system_dbusd(systemd_hostnamed_t)
 dev_list_sysfs(systemd_hostnamed_t)
 dev_read_sysfs(systemd_hostnamed_t)
@@ -296,13 +290,13 @@ kernel_dgram_send(systemd_hostnamed_t)
 logging_stream_connect_syslog(systemd_hostnamed_t)
 seutil_read_config(systemd_hostnamed_t)
 udev_read_db(systemd_hostnamed_t)
-
 #============= systemd_logind_inhibit_var_run_t ==============
-fs_associate_tmpfs(systemd_logind_inhibit_var_run_t)
+allow systemd_logind_t self:capability dac_override;
 
+fs_associate_tmpfs(systemd_logind_inhibit_var_run_t)
+systemd_dbus_chat_logind(systemd_logind_t)
 #============= systemd_logind_sessions_t ==============
 fs_associate_tmpfs(systemd_logind_sessions_t)
-
 #============= systemd_logind_t ==============
 allow systemd_logind_t init_t:system { start status };
 allow systemd_logind_t removable_device_t:blk_file { getattr setattr };
@@ -319,6 +313,7 @@ allow systemd_logind_t systemd_logind_sessions_t:dir { add_name getattr open rea
 allow systemd_logind_t systemd_logind_sessions_t:fifo_file { create open read write };
 allow systemd_logind_t systemd_logind_sessions_t:file { create getattr open read rename setattr unlink write };
 allow systemd_logind_t user_tmp_t:dir { add_name create getattr mounton relabelto search write };
+
 dbus_acquire_svc_system_dbusd(systemd_logind_t)
 dev_list_sysfs(systemd_logind_t)
 dev_manage_dri_dev(systemd_logind_t)
@@ -339,19 +334,16 @@ term_use_unallocated_ttys(systemd_logind_t)
 udev_manage_pid_dirs(systemd_logind_t)
 udev_read_db(systemd_logind_t)
 userdom_use_user_ttys(systemd_logind_t)
-
 #============= systemd_logind_var_run_t ==============
 fs_associate_tmpfs(systemd_logind_var_run_t)
-
+systemd_dbus_chat_logind(systemd_logind_t)
+userdom_manage_tmp_dirs(systemd_logind_t)
 #============= systemd_machined_var_run_t ==============
 fs_associate_tmpfs(systemd_machined_var_run_t)
-
 #============= systemd_networkd_var_run_t ==============
 fs_associate_tmpfs(systemd_networkd_var_run_t)
-
 #============= systemd_passwd_var_run_t ==============
 fs_associate_tmpfs(systemd_passwd_var_run_t)
-
 #============= systemd_resolved_t ==============
 allow systemd_resolved_t self:capability { net_bind_service net_raw setpcap };
 allow systemd_resolved_t self:process { setcap setfscreate };
@@ -360,6 +352,7 @@ allow systemd_resolved_t systemd_networkd_var_run_t:dir { read search watch };
 allow systemd_resolved_t systemd_resolved_var_run_t:dir { add_name create remove_name write };
 allow systemd_resolved_t systemd_resolved_var_run_t:file { create getattr open read rename setattr unlink write };
 allow systemd_resolved_t systemd_resolved_var_run_t:sock_file create;
+
 corenet_tcp_bind_dns_port(systemd_resolved_t)
 corenet_tcp_bind_llmnr_port(systemd_resolved_t)
 corenet_udp_bind_dns_port(systemd_resolved_t)
@@ -370,12 +363,10 @@ kernel_dgram_send(systemd_resolved_t)
 logging_stream_connect_syslog(systemd_resolved_t)
 seutil_read_config(systemd_resolved_t)
 sysnet_manage_config(systemd_resolved_t)
-
 #============= systemd_resolved_var_run_t ==============
 fs_associate_tmpfs(systemd_resolved_var_run_t)
-
 #============= systemd_sysctl_t ==============
-allow systemd_sysctl_t self:capability { net_admin sys_ptrace sys_resource };
+allow systemd_sysctl_t self:capability { net_admin sys_admin sys_resource };
 allow systemd_sysctl_t self:unix_dgram_socket { connect create getopt setopt };
 allow systemd_sysctl_t sysctl_t:file { open write };
 
@@ -393,7 +384,6 @@ kernel_rw_usermodehelper_state(systemd_sysctl_t)
 kernel_rw_vm_sysctls(systemd_sysctl_t)
 kernel_write_security_state(systemd_sysctl_t)
 logging_stream_connect_syslog(systemd_sysctl_t)
-
 #============= systemd_tmpfiles_t ==============
 allow systemd_tmpfiles_t etc_t:dir { relabelfrom relabelto };
 allow systemd_tmpfiles_t event_device_t:chr_file { create getattr relabelfrom relabelto };
@@ -411,18 +401,15 @@ allow systemd_tmpfiles_t motd_var_run_t:dir { create getattr open read relabelfr
 allow systemd_tmpfiles_t motd_var_run_t:file { create getattr open relabelfrom relabelto write };
 allow systemd_tmpfiles_t pam_var_console_t:dir { create read relabelfrom relabelto };
 allow systemd_tmpfiles_t pam_var_run_t:dir { add_name create read relabelfrom relabelto write };
-allow systemd_tmpfiles_t ppp_device_t:chr_file { create getattr relabelfrom relabelto };
 allow systemd_tmpfiles_t self:capability { chown fowner fsetid mknod net_admin };
 allow systemd_tmpfiles_t self:process setfscreate;
-allow systemd_tmpfiles_t self:unix_dgram_socket { connect create getopt setopt };
+allow systemd_tmpfiles_t self:unix_dgram_socket { connect create getopt setopt write };
 allow systemd_tmpfiles_t setrans_var_run_t:dir { create read relabelfrom relabelto };
 allow systemd_tmpfiles_t smbd_var_run_t:dir { create read relabelfrom relabelto };
 allow systemd_tmpfiles_t sound_device_t:chr_file { create getattr relabelfrom relabelto setattr };
 allow systemd_tmpfiles_t sysfs_t:dir { read relabelfrom relabelto };
 allow systemd_tmpfiles_t syslogd_var_run_t:dir { read relabelfrom relabelto setattr };
 allow systemd_tmpfiles_t system_dbusd_var_lib_t:dir { read relabelfrom relabelto };
-allow systemd_tmpfiles_t systemd_coredump_var_lib_t:dir { getattr open read relabelfrom relabelto search };
-allow systemd_tmpfiles_t systemd_coredump_var_lib_t:file getattr;
 allow systemd_tmpfiles_t systemd_logind_sessions_t:dir { getattr open read relabelfrom relabelto };
 allow systemd_tmpfiles_t systemd_logind_var_run_t:dir { getattr open read relabelfrom relabelto };
 allow systemd_tmpfiles_t systemd_logind_var_run_t:file { create getattr open relabelfrom relabelto write };
@@ -467,10 +454,8 @@ rpm_read_cache(systemd_tmpfiles_t)
 selinux_set_enforce_mode(systemd_tmpfiles_t)
 selinux_setcheckreqprot(systemd_tmpfiles_t)
 seutil_read_config(systemd_tmpfiles_t)
-
 #============= systemd_userdbd_runtime_t ==============
 fs_associate_tmpfs(systemd_userdbd_runtime_t)
-
 #============= systemd_userdbd_t ==============
 allow systemd_userdbd_t self:capability dac_read_search;
 allow systemd_userdbd_t self:unix_dgram_socket { connect create getopt setopt write };
@@ -481,128 +466,3 @@ fs_getattr_cgroup(systemd_userdbd_t)
 init_read_state(systemd_userdbd_t)
 kernel_dgram_send(systemd_userdbd_t)
 logging_stream_connect_syslog(systemd_userdbd_t)
-
-########################################
-#
-# systemd_machined local policy
-#
-
-#######################################
-#
-# systemd-networkd local policy
-#
-
-#######################################
-#
-# Local policy
-#
-
-#######################################
-#
-# Local policy
-#
-
-########################################
-#
-# systemd_notify local policy
-#
-
-########################################
-#
-# systemd_logger local policy
-#
-
-########################################
-#
-# systemd_sysctl domains local policy
-#
-
-#######################################
-#
-# Localed policy
-#
-
-#######################################
-#
-# Hostnamed policy
-#
-
-#######################################
-#
-# rfkill policy
-#
-
-#######################################
-#
-# Timedated policy
-#
-
-########################################
-#
-# systemd_sysctl domains local policy
-#
-
-#######################################
-#
-# systemd_coredump domains
-#
-
-#######################################
-#
-# systemd_hwdb domain
-#
-
-#######################################
-#
-# systemd_gpt_generator domain
-#
-
-#######################################
-#
-# systemd_network_generator domain
-#
-
-#######################################
-#
-# systemd_resolved domain
-#
-
-########################################
-#
-# Common rules for systemd domains
-#
-
-#######################################
-#
-# systemd_modules_load domain
-#
-
-#######################################
-#
-# systemd_modules_load domain
-#
-
-#######################################
-#
-# systemd_journal_upload domain
-#
-
-#######################################
-#
-# systemd_modules_load domain
-#
-
-########################################
-#
-# systemd_importd local policy
-#
-
-########################################
-#
-# systemd_userdbd local policy
-#
-
-########################################
-#
-# systemd_sleep local policy
-#
