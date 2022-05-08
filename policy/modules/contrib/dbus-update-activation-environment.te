@@ -1,0 +1,76 @@
+policy_module(dbus-update-activation-environment, 1.0.0)
+########################################
+# Required
+gen_require(`
+    class process { rlimitinh siginh };
+    role user_r;
+    type user_t;
+')
+
+# Roles
+attribute_role dbus-update-activation-environment_roles;
+roleattribute user_r dbus-update-activation-environment_roles;
+role dbus-update-activation-environment_roles types dbus-update-activation-environment_t;
+
+# Types (Binary)
+type dbus-update-activation-environment_t;
+type dbus-update-activation-environment_exec_t;
+application_domain(dbus-update-activation-environment_t, dbus-update-activation-environment_exec_t);
+domain_auto_transition_pattern(user_t, dbus-update-activation-environment_exec_t, dbus-update-activation-environment_t);
+########################################
+require {
+	type dbusd_etc_t;
+	type systemd_logind_t;
+	type cache_home_t;
+	type policykit_t;
+	type dbus-update-activation-environment_exec_t;
+	type gnome_atspi_exec_t;
+	type proc_t;
+	type user_t;
+	type iceauth_exec_t;
+	type user_dbusd_t;
+	type config_home_t;
+	type dbus-update-activation-environment_t;
+	type iceauth_home_t;
+	type firewalld_t;
+	type dbus-launch_t;
+	type NetworkManager_initrc_exec_t;
+	type home_bin_t;
+	type tmp_t;
+	type dbus_home_t;
+	type ssh_agent_exec_t;
+	type NetworkManager_t;
+	type user_home_dir_t;
+	type systemd_resolved_var_run_t;
+	type gpg_agent_exec_t;
+	type dbusd_exec_t;
+	class unix_dgram_socket { connect create ioctl };
+	class udp_socket { create ioctl };
+	class file { create execute execute_no_trans getattr ioctl map open read write };
+	class dir { add_name read search watch write };
+	class lnk_file { create getattr read };
+	class unix_stream_socket connectto;
+	class dbus { acquire_svc send_msg };
+	class system reload;
+	class process { execmem setcap setpgid setrlimit setsched signal };
+	class netlink_kobject_uevent_socket { bind create getattr setopt };
+	class capability { dac_override setgid setuid sys_chroot };
+	class netlink_route_socket { bind create getattr nlmsg_read };
+	class sock_file { create setattr write };
+	class shm { associate getattr read unix_read unix_write write };
+    type dbus-launch_t;
+    type dbus-launch_exec_t;
+}
+
+#============= dbus-update-activation-environment_t ==============
+allow dbus-update-activation-environment_t user_dbusd_t:dbus send_msg;
+allow dbus-update-activation-environment_t user_dbusd_t:unix_stream_socket connectto;
+allow dbus-update-activation-environment_t user_t:dbus send_msg;
+allow dbus-update-activation-environment_t user_t:system reload;
+allow dbus-update-activation-environment_t dbus-launch_exec_t:file execute;
+
+dbus_write_session_tmp_sock_files(dbus-update-activation-environment_t)
+userdom_use_inherited_user_ttys(dbus-update-activation-environment_t)
+
+#============= user_t ==============
+allow user_t dbus-launch_t:process signal;

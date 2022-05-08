@@ -1,0 +1,1 @@
+/usr/bin/dbus-update-activation-environment -- gen_context(system_u:object_r:dbus-update-activation-environment_exec_t,s0)
