@@ -1,0 +1,20 @@
+policy_module(dbus-run-session, 1.0.0)
+########################################
+# Required
+gen_require(`
+    class process { rlimitinh siginh };
+    role user_r;
+    type user_t;
+')
+
+# Roles
+attribute_role dbus-run-session_roles;
+roleattribute user_r dbus-run-session_roles;
+role dbus-run-session_roles types dbus-run-session_t;
+
+# Types (Binary)
+type dbus-run-session_t;
+type dbus-run-session_exec_t;
+application_domain(dbus-run-session_t, dbus-run-session_exec_t);
+domain_auto_transition_pattern(user_t, dbus-run-session_exec_t, dbus-run-session_t);
+########################################
