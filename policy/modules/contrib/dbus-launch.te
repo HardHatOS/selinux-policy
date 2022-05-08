@@ -1,0 +1,203 @@
+policy_module(dbus-launch, 1.0.0)
+########################################
+# Required
+gen_require(`
+    class capability { dac_override setgid setuid sys_admin sys_chroot };
+    class dbus { acquire_svc send_msg };
+    class dir { add_name read search watch write };
+    class file { create execute execute_no_trans getattr map open read write };
+    class lnk_file { create getattr read unlink };
+    class netlink_kobject_uevent_socket { bind create getattr setopt };
+    class netlink_route_socket { bind create getattr nlmsg_read read write };
+    class process { execmem setcap setpgid setrlimit setsched };
+    class shm { associate getattr read unix_read unix_write write };
+    class sock_file { create setattr write };
+    class tcp_socket { connect create getopt read setopt write };
+    class udp_socket { connect create getattr setopt };
+    class unix_dgram_socket { connect create write };
+    class unix_stream_socket { connectto };
+    role user_r;
+    type cache_home_t;
+    type config_home_t;
+    type dbus-cleanup-sockets_exec_t;
+    type dbus-monitor_exec_t;
+    type dbus-test-tool_exec_t;
+    type dbus-uuidgen_exec_t;
+    type dbus_home_t;
+    type dbusd_etc_t;
+    type dbusd_exec_t;
+    type gnome_atspi_exec_t;
+    type gpg_agent_exec_t;
+    type home_bin_t;
+    type iceauth_exec_t;
+    type iceauth_home_t;
+    type local_login_t;
+    type policykit_t;
+    type proc_t;
+    type ssh_agent_exec_t;
+    type system_dbusd_t;
+    type systemd_resolved_t;
+    type systemd_resolved_var_run_t;
+    type systemd_userdbd_t;
+    type tmp_t;
+    type user_dbusd_t;
+    type user_home_dir_t;
+    type user_t;
+')
+
+# Roles
+attribute_role dbus-launch_roles;
+roleattribute user_r dbus-launch_roles;
+role dbus-launch_roles types dbus-launch_t;
+
+# Types (Binary)
+type dbus-launch_t;
+type dbus-launch_exec_t;
+application_domain(dbus-launch_t, dbus-launch_exec_t);
+domain_auto_transition_pattern(user_t, dbus-launch_exec_t, dbus-launch_t);
+########################################
+#============= dbus-launch_t ==============
+allow dbus-launch_t cache_home_t:lnk_file { getattr read };
+allow dbus-launch_t config_home_t:lnk_file { create read unlink };
+allow dbus-launch_t dbus-cleanup-sockets_exec_t:file { execute execute_no_trans getattr map open read };
+allow dbus-launch_t dbus-monitor_exec_t:file { execute execute_no_trans getattr map open read };
+allow dbus-launch_t dbus-test-tool_exec_t:file { execute execute_no_trans getattr map open read };
+allow dbus-launch_t dbus-uuidgen_exec_t:file { execute execute_no_trans getattr map open read };
+allow dbus-launch_t dbus_home_t:dir { add_name write };
+allow dbus-launch_t dbus_home_t:file { create getattr open write };
+allow dbus-launch_t dbusd_etc_t:dir { read watch };
+allow dbus-launch_t dbusd_exec_t:file map;
+allow dbus-launch_t gnome_atspi_exec_t:file map;
+allow dbus-launch_t gpg_agent_exec_t:file { execute execute_no_trans getattr map open read };
+allow dbus-launch_t home_bin_t:dir read;
+allow dbus-launch_t home_bin_t:lnk_file read;
+allow dbus-launch_t iceauth_exec_t:file { execute execute_no_trans map open read };
+allow dbus-launch_t iceauth_home_t:file { getattr open read write };
+allow dbus-launch_t local_login_t:dir search;
+allow dbus-launch_t policykit_t:dir search;
+allow dbus-launch_t policykit_t:file { getattr open read };
+allow dbus-launch_t proc_t:file { getattr open read };
+allow dbus-launch_t self:capability { dac_override setgid setuid sys_admin sys_chroot };
+allow dbus-launch_t self:dbus { acquire_svc send_msg };
+allow dbus-launch_t self:dir { add_name write };
+allow dbus-launch_t self:netlink_kobject_uevent_socket { bind create getattr setopt };
+allow dbus-launch_t self:netlink_route_socket { bind create getattr nlmsg_read read write };
+allow dbus-launch_t self:process { execmem setcap setpgid setrlimit setsched };
+allow dbus-launch_t self:tcp_socket { connect create getopt read setopt write };
+allow dbus-launch_t self:udp_socket { connect create getattr setopt };
+allow dbus-launch_t self:unix_dgram_socket { connect create write };
+allow dbus-launch_t self:unix_stream_socket connectto;
+allow dbus-launch_t ssh_agent_exec_t:file map;
+allow dbus-launch_t system_dbusd_t:dir search;
+allow dbus-launch_t system_dbusd_t:file { getattr open read };
+allow dbus-launch_t systemd_resolved_t:dir search;
+allow dbus-launch_t systemd_resolved_t:file { getattr open read };
+allow dbus-launch_t systemd_resolved_var_run_t:dir { read watch };
+allow dbus-launch_t systemd_userdbd_t:dir search;
+allow dbus-launch_t systemd_userdbd_t:file { getattr open read };
+allow dbus-launch_t tmp_t:lnk_file { create unlink };
+allow dbus-launch_t tmp_t:sock_file { create setattr write };
+allow dbus-launch_t user_dbusd_t:dir search;
+allow dbus-launch_t user_dbusd_t:file { getattr open read };
+allow dbus-launch_t user_home_dir_t:file { create getattr open read rename setattr unlink write };
+allow dbus-launch_t user_t:dir search;
+allow dbus-launch_t user_t:file { getattr open read };
+allow dbus-launch_t user_t:unix_stream_socket connectto;
+
+NetworkManager_read_state(dbus-launch_t)
+alsa_read_rw_config(dbus-launch_t)
+auth_read_passwd_file(dbus-launch_t)
+chronyd_systemctl(dbus-launch_t)
+corecmd_exec_bin(dbus-launch_t)
+corecmd_exec_shell(dbus-launch_t)
+corecmd_mmap_bin_files(dbus-launch_t)
+corecmd_shell_entry_type(dbus-launch_t)
+corenet_tcp_connect_http_port(dbus-launch_t)
+cron_read_state_crond(dbus-launch_t)
+dbus_exec_dbusd(dbus-launch_t)
+dbus_read_config(dbus-launch_t)
+dbus_read_lib_files(dbus-launch_t)
+dbus_send_system_bus(dbus-launch_t)
+dbus_stream_connect_system_dbusd(dbus-launch_t)
+dbus_system_bus_client(dbus-launch_t)
+dev_list_sysfs(dbus-launch_t)
+dev_read_sysfs(dbus-launch_t)
+dev_rw_dri(dbus-launch_t)
+files_delete_tmp_sockets(dbus-launch_t)
+files_exec_usr_files(dbus-launch_t)
+files_manage_generic_tmp_dirs(dbus-launch_t)
+files_manage_generic_tmp_files(dbus-launch_t)
+files_map_read_etc_files(dbus-launch_t)
+files_watch_etc_dirs(dbus-launch_t)
+files_watch_root_dirs(dbus-launch_t)
+files_watch_usr_dirs(dbus-launch_t)
+firewalld_systemctl(dbus-launch_t)
+fs_associate_proc(dbus-launch_t)
+fs_exec_tmpfs_files(dbus-launch_t)
+fs_getattr_cgroup(dbus-launch_t)
+fs_getattr_tmpfs(dbus-launch_t)
+fs_getattr_xattr_fs(dbus-launch_t)
+fs_manage_tmpfs_files(dbus-launch_t)
+gnome_exec_atspi(dbus-launch_t)
+gnome_manage_data(dbus-launch_t)
+gnome_manage_gconf_home_files(dbus-launch_t)
+gnome_manage_home_config(dbus-launch_t)
+gnome_manage_home_config_dirs(dbus-launch_t)
+gnome_read_generic_data_home_files(dbus-launch_t)
+gpg_manage_home_content(dbus-launch_t)
+init_read_state(dbus-launch_t)
+init_stream_connectto(dbus-launch_t)
+kernel_dgram_send(dbus-launch_t)
+kernel_get_sysvipc_info(dbus-launch_t)
+kernel_list_proc(dbus-launch_t)
+kernel_read_fs_sysctls(dbus-launch_t)
+kernel_read_state(dbus-launch_t)
+kernel_stream_connect(dbus-launch_t)
+locallogin_domtrans(dbus-launch_t)
+logging_create_devlog_dev(dbus-launch_t)
+logging_stream_connect_syslog(dbus-launch_t)
+logging_systemctl_audit(dbus-launch_t)
+logging_systemctl_syslogd(dbus-launch_t)
+miscfiles_map_generic_certs(dbus-launch_t)
+miscfiles_read_generic_certs(dbus-launch_t)
+miscfiles_watch_fonts_dirs(dbus-launch_t)
+miscfiles_watch_localization_dirs(dbus-launch_t)
+networkmanager_dbus_chat(dbus-launch_t)
+policykit_dbus_chat(dbus-launch_t)
+pulseaudio_read_home_files(dbus-launch_t)
+selinux_compute_access_vector(dbus-launch_t)
+selinux_get_enforce_mode(dbus-launch_t)
+selinux_set_enforce_mode(dbus-launch_t)
+seutil_read_default_contexts(dbus-launch_t)
+seutil_search_default_contexts(dbus-launch_t)
+ssh_agent_exec(dbus-launch_t)
+ssh_systemctl(dbus-launch_t)
+sysnet_read_config(dbus-launch_t)
+systemd_dbus_chat_logind(dbus-launch_t)
+systemd_login_read_pid_files(dbus-launch_t)
+systemd_logind_read_state(dbus-launch_t)
+systemd_manage_userdbd_runtime_sock_files(dbus-launch_t)
+systemd_userdbd_runtime_manage_symlinks(dbus-launch_t)
+systemd_userdbd_stream_connect(dbus-launch_t)
+systemd_write_inhibit_pipes(dbus-launch_t)
+term_use_generic_ptys(dbus-launch_t)
+term_use_ptmx(dbus-launch_t)
+udev_read_db(dbus-launch_t)
+udev_read_state(dbus-launch_t)
+userdom_exec_user_bin_files(dbus-launch_t)
+userdom_manage_home_certs(dbus-launch_t)
+userdom_manage_tmp_dirs(dbus-launch_t)
+userdom_manage_tmp_files(dbus-launch_t)
+userdom_manage_tmp_sockets(dbus-launch_t)
+userdom_manage_user_home_content_dirs(dbus-launch_t)
+userdom_manage_user_home_content_files(dbus-launch_t)
+userdom_manage_user_home_dirs(dbus-launch_t)
+userdom_read_home_audio_files(dbus-launch_t)
+userdom_use_inherited_user_ttys(dbus-launch_t)
+xserver_manage_user_xauth(dbus-launch_t)
+
+#============= user_t ==============
+allow user_t dbus-launch_t:dir search;
+allow user_t dbus-launch_t:file { open read };
+allow user_t dbus-launch_t:lnk_file read;
+allow user_t dbus-launch_t:shm { associate getattr read unix_read unix_write write };
