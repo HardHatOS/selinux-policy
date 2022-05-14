@@ -101,7 +101,7 @@ allow dbus-launch_t tmp_t:lnk_file { create unlink };
 allow dbus-launch_t tmp_t:sock_file { create setattr write };
 allow dbus-launch_t user_dbusd_t:dir search;
 allow dbus-launch_t user_dbusd_t:file { getattr open read };
-allow dbus-launch_t user_home_dir_t:file { create getattr open read rename setattr unlink write };
+allow dbus-launch_t user_home_dir_t:file { create getattr link open read rename setattr unlink write };
 allow dbus-launch_t user_t:dir search;
 allow dbus-launch_t user_t:file { getattr open read };
 allow dbus-launch_t user_t:unix_stream_socket connectto;
@@ -166,6 +166,7 @@ miscfiles_watch_fonts_dirs(dbus-launch_t)
 miscfiles_watch_localization_dirs(dbus-launch_t)
 networkmanager_dbus_chat(dbus-launch_t)
 policykit_dbus_chat(dbus-launch_t)
+pulseaudio_manage_home_dirs(dbus-launch_t)
 pulseaudio_read_home_files(dbus-launch_t)
 selinux_compute_access_vector(dbus-launch_t)
 selinux_get_enforce_mode(dbus-launch_t)
