@@ -301,16 +301,16 @@ fs_associate_tmpfs(systemd_logind_sessions_t)
 allow systemd_logind_t init_t:system { start status };
 allow systemd_logind_t removable_device_t:blk_file { getattr setattr };
 allow systemd_logind_t scsi_generic_device_t:chr_file { getattr setattr };
-allow systemd_logind_t self:capability { fowner net_admin sys_tty_config };
+allow systemd_logind_t self:capability { chown fowner net_admin sys_tty_config };
 allow systemd_logind_t self:netlink_kobject_uevent_socket { bind create getattr read setopt };
 allow systemd_logind_t self:process setfscreate;
 allow systemd_logind_t self:unix_dgram_socket { connect create getopt setopt write };
 allow systemd_logind_t sound_device_t:chr_file { getattr setattr };
 allow systemd_logind_t systemd_logind_inhibit_var_run_t:dir { add_name getattr open read remove_name search write };
-allow systemd_logind_t systemd_logind_inhibit_var_run_t:fifo_file { create open read write };
-allow systemd_logind_t systemd_logind_inhibit_var_run_t:file { create getattr open read rename setattr write };
+allow systemd_logind_t systemd_logind_inhibit_var_run_t:fifo_file { create open read unlink write };
+allow systemd_logind_t systemd_logind_inhibit_var_run_t:file { create getattr open read rename setattr unlink write };
 allow systemd_logind_t systemd_logind_sessions_t:dir { add_name getattr open read remove_name search write };
-allow systemd_logind_t systemd_logind_sessions_t:fifo_file { create open read write };
+allow systemd_logind_t systemd_logind_sessions_t:fifo_file { create open read unlink write };
 allow systemd_logind_t systemd_logind_sessions_t:file { create getattr open read rename setattr unlink write };
 allow systemd_logind_t user_tmp_t:dir { add_name create getattr mounton relabelto search write };
 
@@ -334,6 +334,7 @@ term_use_unallocated_ttys(systemd_logind_t)
 udev_manage_pid_dirs(systemd_logind_t)
 udev_read_db(systemd_logind_t)
 userdom_manage_tmp_dirs(systemd_logind_t)
+userdom_setattr_user_ttys(systemd_logind_t)
 userdom_use_user_ttys(systemd_logind_t)
 #============= systemd_logind_var_run_t ==============
 fs_associate_tmpfs(systemd_logind_var_run_t)
