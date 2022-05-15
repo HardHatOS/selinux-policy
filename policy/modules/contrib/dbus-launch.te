@@ -29,6 +29,7 @@ gen_require(`
     type dbusd_exec_t;
     type gnome_atspi_exec_t;
     type gpg_agent_exec_t;
+    type gpg_secret_t;
     type home_bin_t;
     type iceauth_exec_t;
     type iceauth_home_t;
@@ -40,6 +41,7 @@ gen_require(`
     type systemd_resolved_t;
     type systemd_resolved_var_run_t;
     type systemd_userdbd_t;
+    type thumb_exec_t;
     type tmp_t;
     type user_dbusd_t;
     type user_home_dir_t;
@@ -71,10 +73,11 @@ allow dbus-launch_t dbusd_etc_t:dir { read watch };
 allow dbus-launch_t dbusd_exec_t:file map;
 allow dbus-launch_t gnome_atspi_exec_t:file map;
 allow dbus-launch_t gpg_agent_exec_t:file { execute execute_no_trans getattr map open read };
+allow dbus-launch_t gpg_secret_t:sock_file { create getattr setattr unlink write };
 allow dbus-launch_t home_bin_t:dir read;
 allow dbus-launch_t home_bin_t:lnk_file read;
 allow dbus-launch_t iceauth_exec_t:file { execute execute_no_trans map open read };
-allow dbus-launch_t iceauth_home_t:file { getattr open read write };
+allow dbus-launch_t iceauth_home_t:file { getattr open read unlink write };
 allow dbus-launch_t local_login_t:dir search;
 allow dbus-launch_t policykit_t:dir search;
 allow dbus-launch_t policykit_t:file { getattr open read };
@@ -97,6 +100,7 @@ allow dbus-launch_t systemd_resolved_t:file { getattr open read };
 allow dbus-launch_t systemd_resolved_var_run_t:dir { read watch };
 allow dbus-launch_t systemd_userdbd_t:dir search;
 allow dbus-launch_t systemd_userdbd_t:file { getattr open read };
+allow dbus-launch_t thumb_exec_t:file { execute execute_no_trans open read };
 allow dbus-launch_t tmp_t:lnk_file { create unlink };
 allow dbus-launch_t tmp_t:sock_file { create setattr write };
 allow dbus-launch_t user_dbusd_t:dir search;
@@ -125,8 +129,10 @@ dbus_system_bus_client(dbus-launch_t)
 dev_list_sysfs(dbus-launch_t)
 dev_read_sysfs(dbus-launch_t)
 dev_rw_dri(dbus-launch_t)
+devicekit_dbus_chat_disk(dbus-launch_t)
 files_delete_tmp_sockets(dbus-launch_t)
 files_exec_usr_files(dbus-launch_t)
+files_list_home(dbus-launch_t)
 files_manage_generic_tmp_dirs(dbus-launch_t)
 files_manage_generic_tmp_files(dbus-launch_t)
 files_map_read_etc_files(dbus-launch_t)
@@ -145,6 +151,7 @@ gnome_manage_data(dbus-launch_t)
 gnome_manage_gconf_home_files(dbus-launch_t)
 gnome_manage_home_config(dbus-launch_t)
 gnome_manage_home_config_dirs(dbus-launch_t)
+gnome_map_generic_data_home_files(dbus-launch_t)
 gnome_read_generic_data_home_files(dbus-launch_t)
 gpg_manage_home_content(dbus-launch_t)
 init_read_state(dbus-launch_t)
@@ -167,6 +174,7 @@ miscfiles_watch_localization_dirs(dbus-launch_t)
 networkmanager_dbus_chat(dbus-launch_t)
 policykit_dbus_chat(dbus-launch_t)
 pulseaudio_manage_home_dirs(dbus-launch_t)
+pulseaudio_manage_home_symlinks(dbus-launch_t)
 pulseaudio_read_home_files(dbus-launch_t)
 selinux_compute_access_vector(dbus-launch_t)
 selinux_get_enforce_mode(dbus-launch_t)
@@ -175,12 +183,14 @@ seutil_read_config(dbus-launch_t)
 seutil_read_default_contexts(dbus-launch_t)
 seutil_search_default_contexts(dbus-launch_t)
 ssh_agent_exec(dbus-launch_t)
+ssh_read_user_home_files(dbus-launch_t)
 ssh_systemctl(dbus-launch_t)
 sysnet_read_config(dbus-launch_t)
 systemd_dbus_chat_logind(dbus-launch_t)
 systemd_login_read_pid_files(dbus-launch_t)
 systemd_logind_read_state(dbus-launch_t)
 systemd_manage_userdbd_runtime_sock_files(dbus-launch_t)
+systemd_read_logind_sessions_files(dbus-launch_t)
 systemd_userdbd_runtime_manage_symlinks(dbus-launch_t)
 systemd_userdbd_stream_connect(dbus-launch_t)
 systemd_write_inhibit_pipes(dbus-launch_t)
