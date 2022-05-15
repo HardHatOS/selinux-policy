@@ -11,163 +11,114 @@ attribute systemctl_domain;
 attribute systemd_mount_directory;
 attribute systemd_private_tmp_type;
 attribute systemd_read_efivarfs_type;
-
-systemd_domain_template(systemd_logger)
-systemd_domain_template(systemd_logind)
-
-# /run/systemd/sessions
-type systemd_logind_sessions_t;
-type systemd_logind_var_lib_t;
-
-systemd_mount_dir(systemd_logind_var_lib_t)
-
-# /run/systemd/{seats, users}
-type systemd_logind_var_run_t;
-type systemd_logind_inhibit_var_run_t;
-type systemd_home_t;
+type hostname_etc_t;
+type power_unit_file_t;
 type random_seed_t;
-
-systemd_domain_template(systemd_coredump)
-
+type systemd_bootchart_tmpfs_t;
+type systemd_bootchart_unit_file_t;
+type systemd_bootchart_var_run_t;
 type systemd_coredump_tmpfs_t;
 type systemd_coredump_var_lib_t;
-
-systemd_domain_template(systemd_hwdb)
-type systemd_hwdb_unit_file_t;
-
-systemd_unit_file(systemd_hwdb_unit_file_t)
-systemd_domain_template(systemd_networkd)
-
-type systemd_networkd_unit_file_t;
-systemd_unit_file(systemd_networkd_unit_file_t)
-
-type systemd_networkd_var_run_t;
-
-systemd_domain_template(systemd_initctl)
-
-systemd_domain_template(systemd_bootchart)
-
-type systemd_bootchart_unit_file_t;
-systemd_unit_file(systemd_bootchart_unit_file_t)
-
-type systemd_bootchart_var_run_t;
-
-type systemd_bootchart_tmpfs_t;
-
-systemd_domain_template(systemd_journal_upload)
-
-type systemd_journal_upload_var_lib_t;
-
-systemd_domain_template(systemd_resolved)
-
-type systemd_resolved_var_run_t;
-
-type systemd_resolved_unit_file_t;
-systemd_unit_file(systemd_resolved_unit_file_t)
-
-systemd_domain_template(systemd_modules_load)
-
-type systemd_modules_load_unit_file_t;
-systemd_unit_file(systemd_modules_load_unit_file_t)
-
-# domain for systemd-tty-ask-password-agent and systemd-gnome-ask-password-agent
-# systemd components
-
-systemd_domain_template(systemd_passwd_agent)
-
-type systemd_passwd_var_run_t alias systemd_device_t;
-
-# domain for systemd-tmpfiles component
-systemd_domain_template(systemd_tmpfiles)
-systemd_domain_template(systemd_notify)
-
-# type for systemd unit files
-type systemd_unit_file_t;
-systemd_unit_file(systemd_unit_file_t)
-
-type systemd_runtime_unit_file_t;
-systemd_unit_file(systemd_runtime_unit_file_t)
-
-type power_unit_file_t;
-systemd_unit_file(power_unit_file_t)
-
-type systemd_vconsole_unit_file_t;
-systemd_unit_file(systemd_vconsole_unit_file_t)
-
-# executable for systemctl
-type systemd_systemctl_exec_t;
-
-systemd_domain_template(systemd_localed)
-systemd_domain_template(systemd_hostnamed)
-
-type hostname_etc_t;
-
-type systemd_hwdb_etc_t;
-
-systemd_domain_template(systemd_rfkill)
-
-type systemd_rfkill_unit_file_t;
-systemd_unit_file(systemd_rfkill_unit_file_t)
-
-type systemd_rfkill_var_lib_t;
-
-systemd_domain_template(systemd_timedated)
-
-typeattribute systemd_timedated_t systemd_domain;
-typealias systemd_timedated_t alias gnomeclock_t;
-
-type systemd_timedated_unit_file_t;
-systemd_unit_file(systemd_timedated_unit_file_t)
-
-type systemd_timedated_var_run_t;
-
-type systemd_timedated_var_lib_t;
-
-systemd_domain_template(systemd_sysctl)
-
-#domain for gpt-auto-generator
-systemd_domain_template(systemd_gpt_generator)
-
-systemd_domain_template(systemd_network_generator)
-
 type systemd_gpt_generator_unit_file_t;
-systemd_unit_file(systemd_gpt_generator_unit_file_t)
-
-#domain for systemd-machined
-systemd_domain_template(systemd_machined)
-
-type systemd_machined_unit_file_t;
-systemd_unit_file(systemd_machined_unit_file_t)
-
-# /run/systemd/machines
-type systemd_machined_var_run_t;
-
-# /var/lib/machines
-type systemd_machined_var_lib_t;
-
-systemd_domain_template(systemd_importd)
-
-type systemd_importd_var_run_t;
-
+type systemd_home_t;
+type systemd_hwdb_etc_t;
+type systemd_hwdb_unit_file_t;
 type systemd_importd_tmp_t;
-
+type systemd_importd_var_run_t;
+type systemd_journal_upload_var_lib_t;
+type systemd_logind_inhibit_var_run_t;
+type systemd_logind_sessions_t;
+type systemd_logind_var_lib_t;
+type systemd_logind_var_run_t;
 type systemd_machined_devpts_t;
-term_login_pty(systemd_machined_devpts_t)
-
-systemd_domain_template(systemd_userdbd)
-
-type systemd_userdbd_unit_file_t;
-systemd_unit_file(systemd_userdbd_unit_file_t)
-
+type systemd_machined_unit_file_t;
+type systemd_machined_var_lib_t;
+type systemd_machined_var_run_t;
+type systemd_modules_load_unit_file_t;
+type systemd_networkd_unit_file_t;
+type systemd_networkd_var_run_t;
+type systemd_passwd_var_run_t alias systemd_device_t;
+type systemd_resolved_unit_file_t;
+type systemd_resolved_var_run_t;
+type systemd_rfkill_unit_file_t;
+type systemd_rfkill_var_lib_t;
+type systemd_runtime_unit_file_t;
+type systemd_systemctl_exec_t;
+type systemd_timedated_unit_file_t;
+type systemd_timedated_var_lib_t;
+type systemd_timedated_var_run_t;
+type systemd_unit_file_t;
 type systemd_userdbd_runtime_t;
-
+type systemd_userdbd_unit_file_t;
+type systemd_vconsole_unit_file_t;
+systemd_domain_template(systemd_analyze)
+systemd_domain_template(systemd_ask_password)
+systemd_domain_template(systemd_bootchart)
+systemd_domain_template(systemd_cat)
+systemd_domain_template(systemd_cgls)
+systemd_domain_template(systemd_cgtop)
+systemd_domain_template(systemd_coredump)
+systemd_domain_template(systemd_cryptenroll)
+systemd_domain_template(systemd_delta)
+systemd_domain_template(systemd_detect_virt)
+systemd_domain_template(systemd_dissect)
+systemd_domain_template(systemd_escape)
+systemd_domain_template(systemd_firstboot)
+systemd_domain_template(systemd_gpt_generator)
+systemd_domain_template(systemd_hostnamed)
+systemd_domain_template(systemd_hwdb)
+systemd_domain_template(systemd_id128)
+systemd_domain_template(systemd_importd)
+systemd_domain_template(systemd_inhibit)
+systemd_domain_template(systemd_initctl)
+systemd_domain_template(systemd_journal_upload)
+systemd_domain_template(systemd_localed)
+systemd_domain_template(systemd_logger)
+systemd_domain_template(systemd_logind)
+systemd_domain_template(systemd_machine_id_setup)
+systemd_domain_template(systemd_machined)
+systemd_domain_template(systemd_modules_load)
+systemd_domain_template(systemd_mount)
+systemd_domain_template(systemd_network_generator)
+systemd_domain_template(systemd_networkd)
+systemd_domain_template(systemd_notify)
+systemd_domain_template(systemd_passwd_agent)
+systemd_domain_template(systemd_path)
+systemd_domain_template(systemd_repart)
+systemd_domain_template(systemd_resolved)
+systemd_domain_template(systemd_rfkill)
+systemd_domain_template(systemd_run)
 systemd_domain_template(systemd_sleep)
-
+systemd_domain_template(systemd_socket_activate)
+systemd_domain_template(systemd_stdio_bridge)
+systemd_domain_template(systemd_sysctl)
+systemd_domain_template(systemd_sysext)
+systemd_domain_template(systemd_sysusers)
+systemd_domain_template(systemd_timedated)
+systemd_domain_template(systemd_tmpfiles)
+systemd_domain_template(systemd_userdbd)
+systemd_mount_dir(systemd_logind_var_lib_t)
+systemd_unit_file(power_unit_file_t)
+systemd_unit_file(systemd_bootchart_unit_file_t)
+systemd_unit_file(systemd_gpt_generator_unit_file_t)
+systemd_unit_file(systemd_hwdb_unit_file_t)
+systemd_unit_file(systemd_machined_unit_file_t)
+systemd_unit_file(systemd_modules_load_unit_file_t)
+systemd_unit_file(systemd_networkd_unit_file_t)
+systemd_unit_file(systemd_resolved_unit_file_t)
+systemd_unit_file(systemd_rfkill_unit_file_t)
+systemd_unit_file(systemd_runtime_unit_file_t)
+systemd_unit_file(systemd_timedated_unit_file_t)
+systemd_unit_file(systemd_unit_file_t)
+systemd_unit_file(systemd_userdbd_unit_file_t)
+systemd_unit_file(systemd_vconsole_unit_file_t)
+term_login_pty(systemd_machined_devpts_t)
+typealias systemd_timedated_t alias gnomeclock_t;
+typeattribute systemd_timedated_t systemd_domain;
 #######################################
 #
 # Local policy
 #
-
 
 require {
 	type uhid_device_t;
@@ -319,6 +270,7 @@ dev_list_sysfs(systemd_logind_t)
 dev_manage_dri_dev(systemd_logind_t)
 dev_read_sysfs(systemd_logind_t)
 dev_rw_input_dev(systemd_logind_t)
+dev_rw_sysfs(systemd_logind_t)
 fs_getattr_cgroup(systemd_logind_t)
 fs_mount_tmpfs(systemd_logind_t)
 fs_relabel_tmpfs_dirs(systemd_logind_t)
