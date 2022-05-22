@@ -168,6 +168,7 @@ require {
 	type hostname_etc_t;
 	type NetworkManager_initrc_exec_t;
 	type systemd_sysctl_t;
+    type rpm_script_t;
 	type fuse_device_t;
 	type unconfined_service_t;
 	type system_dbusd_var_lib_t;
@@ -221,6 +222,18 @@ allow init_t systemd_userdbd_runtime_t:sock_file { create relabelto unlink };
 allow init_t user_t:process siginh;
 
 auth_read_shadow(init_t)
+#============= rpm_script_t ==============
+allow rpm_script_t systemd_coredump_var_lib_t:dir { getattr read };
+allow rpm_script_t systemd_logind_var_run_t:dir relabelfrom;
+allow rpm_script_t systemd_networkd_var_run_t:dir { getattr read };
+allow rpm_script_t systemd_passwd_var_run_t:dir relabelfrom;
+
+systemd_hwdb_manage_config(rpm_script_t)
+systemd_machined_list_pid_dirs(rpm_script_t)
+systemd_read_logind_sessions_files(rpm_script_t)
+#============= systemd_detect_virt_t ==============
+fs_getattr_cgroup(systemd_detect_virt_t)
+init_read_state(systemd_detect_virt_t)
 #============= systemd_gpt_generator_t ==============
 dev_list_sysfs(systemd_gpt_generator_t)
 dev_read_sysfs(systemd_gpt_generator_t)
@@ -241,6 +254,8 @@ kernel_dgram_send(systemd_hostnamed_t)
 logging_stream_connect_syslog(systemd_hostnamed_t)
 seutil_read_config(systemd_hostnamed_t)
 udev_read_db(systemd_hostnamed_t)
+#============= systemd_hwdb_etc_t ==============
+fs_associate(systemd_hwdb_etc_t)
 #============= systemd_logind_inhibit_var_run_t ==============
 allow systemd_logind_t self:capability dac_override;
 
@@ -274,6 +289,7 @@ dev_rw_sysfs(systemd_logind_t)
 fs_getattr_cgroup(systemd_logind_t)
 fs_mount_tmpfs(systemd_logind_t)
 fs_relabel_tmpfs_dirs(systemd_logind_t)
+getty_start_services(systemd_logind_t)
 init_manage_utmp(systemd_logind_t)
 init_search_var_lib_dirs(systemd_logind_t)
 kernel_dgram_send(systemd_logind_t)
@@ -339,6 +355,8 @@ kernel_rw_usermodehelper_state(systemd_sysctl_t)
 kernel_rw_vm_sysctls(systemd_sysctl_t)
 kernel_write_security_state(systemd_sysctl_t)
 logging_stream_connect_syslog(systemd_sysctl_t)
+#============= systemd_systemctl_exec_t ==============
+fs_associate(systemd_systemctl_exec_t)
 #============= systemd_tmpfiles_t ==============
 allow systemd_tmpfiles_t etc_t:dir { relabelfrom relabelto };
 allow systemd_tmpfiles_t event_device_t:chr_file { create getattr relabelfrom relabelto };
@@ -422,3 +440,5 @@ fs_getattr_cgroup(systemd_userdbd_t)
 init_read_state(systemd_userdbd_t)
 kernel_dgram_send(systemd_userdbd_t)
 logging_stream_connect_syslog(systemd_userdbd_t)
+#============= unconfined_t ==============
+allow unconfined_t systemd_systemctl_exec_t:file { relabelto rename setattr unlink };
