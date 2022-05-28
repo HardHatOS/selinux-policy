@@ -279,6 +279,7 @@ allow systemd_logind_t systemd_logind_sessions_t:dir { add_name getattr open rea
 allow systemd_logind_t systemd_logind_sessions_t:fifo_file { create open read unlink write };
 allow systemd_logind_t systemd_logind_sessions_t:file { create getattr open read rename setattr unlink write };
 allow systemd_logind_t user_tmp_t:dir { add_name create getattr mounton relabelto search write };
+allow systemd_logind_t wireless_device_t:chr_file setattr;
 
 dbus_acquire_svc_system_dbusd(systemd_logind_t)
 dev_list_sysfs(systemd_logind_t)
