@@ -1,5 +1,80 @@
 policy_module(systemd, 1.0.0)
 
+gen_require(`
+    class blk_file { getattr setattr };
+    class capability { chown dac_override dac_read_search fowner fsetid mknod net_admin net_bind_service net_raw setpcap sys_admin sys_resource sys_tty_config };
+    class chr_file { create getattr relabelfrom relabelto setattr };
+    class dir { add_name create getattr lock mounton open read relabelfrom relabelto remove_name search setattr watch write };
+    class fifo_file { create open read unlink write };
+    class file { create execute_no_trans getattr open read relabelfrom relabelto rename setattr unlink write };
+    class netlink_kobject_uevent_socket { bind create getattr read setopt };
+    class process { setcap setfscreate siginh };
+    class sock_file { create relabelto unlink };
+    class system { start status };
+    class unix_dgram_socket { connect create getopt setopt write };
+    type auditd_t;
+    type etc_t;
+    type event_device_t;
+    type faillog_t;
+    type fuse_device_t;
+    type home_root_t;
+    type hostname_etc_t;
+    type init_t;
+    type init_var_lib_t;
+    type initrc_var_run_t;
+    type lastlog_t;
+    type loop_control_device_t;
+    type mandb_cache_t;
+    type mdadm_var_run_t;
+    type mnt_t;
+    type motd_var_run_t;
+    type pam_var_console_t;
+    type pam_var_run_t;
+    type removable_device_t;
+    type rpm_script_t;
+    type scsi_generic_device_t;
+    type setrans_var_run_t;
+    type smbd_var_run_t;
+    type sound_device_t;
+    type sysctl_t;
+    type sysfs_t;
+    type syslogd_var_run_t;
+    type system_dbusd_var_lib_t;
+    type systemd_coredump_var_lib_t;
+    type systemd_hostnamed_t;
+    type systemd_logind_inhibit_var_run_t;
+    type systemd_logind_sessions_t;
+    type systemd_logind_t;
+    type systemd_logind_var_run_t;
+    type systemd_machined_var_run_t;
+    type systemd_networkd_var_run_t;
+    type systemd_passwd_var_run_t;
+    type systemd_resolved_t;
+    type systemd_resolved_var_run_t;
+    type systemd_sysctl_t;
+    type systemd_systemctl_exec_t;
+    type systemd_tmpfiles_t;
+    type systemd_userdbd_exec_t;
+    type systemd_userdbd_runtime_t;
+    type systemd_userdbd_t;
+    type tmp_t;
+    type tun_tap_device_t;
+    type uhid_device_t;
+    type unconfined_t;
+    type user_fonts_t;
+    type user_t;
+    type user_tmp_t;
+    type var_lib_t;
+    type var_lock_t;
+    type var_log_t;
+    type var_run_t;
+    type var_spool_t;
+    type var_t;
+    type vfio_device_t;
+    type vhost_device_t;
+    type wireless_device_t;
+')
+
 #######################################
 #
 # Declarations
@@ -119,93 +194,6 @@ typeattribute systemd_timedated_t systemd_domain;
 #
 # Local policy
 #
-
-require {
-	type uhid_device_t;
-	type systemd_tmpfiles_t;
-	type tun_tap_device_t;
-	type vhost_device_t;
-	type systemd_gpt_generator_t;
-	type setrans_var_run_t;
-	type mdadm_var_run_t;
-	type initrc_var_run_t;
-	type ppp_device_t;
-	type smbd_var_run_t;
-	type systemd_userdbd_exec_t;
-	type pam_var_run_t;
-	type sysctl_t;
-	type user_t;
-	type wireless_device_t;
-	type systemd_hostnamed_t;
-	type removable_device_t;
-	type faillog_t;
-	type init_var_lib_t;
-	type cache_home_t;
-	type systemd_passwd_var_run_t;
-	type systemd_networkd_var_run_t;
-	type systemd_logind_var_run_t;
-	type systemd_resolved_var_run_t;
-	type lastlog_t;
-	type firewalld_t;
-	type vfio_device_t;
-	type motd_var_run_t;
-	type mnt_t;
-	type mandb_cache_t;
-	type systemd_userdbd_t;
-	type unconfined_t;
-	type var_lock_t;
-	type systemd_resolved_t;
-	type systemd_logind_t;
-	type etc_t;
-	type getty_t;
-	type var_spool_t;
-	type systemd_userdbd_runtime_t;
-	type var_t;
-	type var_run_t;
-	type systemd_logind_sessions_t;
-	type local_login_t;
-	type systemd_tmpfiles_exec_t;
-	type hostname_etc_t;
-	type NetworkManager_initrc_exec_t;
-	type systemd_sysctl_t;
-    type rpm_script_t;
-	type fuse_device_t;
-	type unconfined_service_t;
-	type system_dbusd_var_lib_t;
-	type scsi_generic_device_t;
-	type init_t;
-	type user_fonts_t;
-	type loop_control_device_t;
-	type systemd_logind_inhibit_var_run_t;
-	type var_log_t;
-	type pam_var_console_t;
-	type iptables_t;
-	type tmp_t;
-	type sound_device_t;
-	type sysfs_t;
-	type NetworkManager_t;
-	type event_device_t;
-	type user_tmp_t;
-	type systemd_machined_var_run_t;
-	type var_lib_t;
-	type home_root_t;
-	type auditd_t;
-	type syslogd_var_run_t;
-	type systemd_coredump_var_lib_t;
-	class dir { add_name create getattr lock mounton open read relabelfrom relabelto remove_name search setattr watch write };
-	class sock_file { create relabelto unlink };
-	class file { create execute_no_trans getattr map open read relabelfrom relabelto rename setattr unlink write };
-	class process { noatsecure rlimitinh setcap setfscreate siginh };
-	class unix_dgram_socket { connect create getopt setopt write };
-	class capability { chown dac_read_search fowner fsetid mknod net_admin net_bind_service net_raw setpcap setuid sys_ptrace sys_resource sys_tty_config };
-	class chr_file { create getattr relabelfrom relabelto setattr };
-	class netlink_kobject_uevent_socket { bind create getattr read setopt };
-	class fifo_file { create open read write };
-	class system { start status };
-	class blk_file { getattr setattr };
-	class lnk_file read;
-}
-
 #============= auditd_t ==============
 allow auditd_t self:capability fowner;
 #============= init_t ==============
