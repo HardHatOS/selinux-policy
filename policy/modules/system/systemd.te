@@ -211,7 +211,6 @@ allow init_t user_t:process siginh;
 
 auth_read_shadow(init_t)
 #============= rpm_script_t ==============
-allow rpm_script_t systemd_coredump_var_lib_t:dir { getattr read };
 allow rpm_script_t systemd_logind_var_run_t:dir relabelfrom;
 allow rpm_script_t systemd_networkd_var_run_t:dir { getattr read };
 allow rpm_script_t systemd_passwd_var_run_t:dir relabelfrom;
