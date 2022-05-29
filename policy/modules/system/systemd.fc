@@ -8,6 +8,7 @@
 /etc/systemd/system\.control(/.*)? gen_context(system_u:object_r:systemd_unit_file_t,s0)
 /etc/udev/.*hwdb.* -- gen_context(system_u:object_r:systemd_hwdb_etc_t,s0)
 /root/\.local/share/systemd(/.*)? gen_context(system_u:object_r:systemd_home_t,s0)
+/usr/bin/resolvectl -- gen_context(system_u:object_r:systemd_resolvectl_exec_t,s0)
 /usr/bin/systemctl -- gen_context(system_u:object_r:systemd_systemctl_exec_t,s0)
 /usr/bin/systemd-analyze -- gen_context(system_u:object_r:systemd_analyze_exec_t,s0)
 /usr/bin/systemd-ask-password -- gen_context(system_u:object_r:systemd_ask_password_exec_t,s0)
